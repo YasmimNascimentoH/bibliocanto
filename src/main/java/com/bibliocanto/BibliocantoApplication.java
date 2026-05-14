@@ -1,4 +1,4 @@
-package com.example.bibliocanto;
+package com.bibliocanto;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
