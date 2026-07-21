@@ -1,6 +1,7 @@
 package com.bibliocanto.controller;
 
 import com.bibliocanto.dto.ExemplarLivroDTO;
+import com.bibliocanto.model.SituacaoLivro;
 import com.bibliocanto.service.ExemplarLivroService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -35,9 +36,12 @@ public class ExemplarLivroController {
         return new ResponseEntity<>(service.criar(dto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ExemplarLivroDTO> update(@PathVariable UUID id, @RequestBody @Valid ExemplarLivroDTO dto) {
-        return ResponseEntity.ok(service.atualizar(id, dto));
+    @PatchMapping("/{id}/situacao")
+    public ResponseEntity<ExemplarLivroDTO> alterarSituacao(
+            @PathVariable UUID id,
+            @RequestParam SituacaoLivro situacao) {
+
+        return ResponseEntity.ok(service.atualizarSituacao(id, situacao));
     }
 
     @DeleteMapping("/{id}")

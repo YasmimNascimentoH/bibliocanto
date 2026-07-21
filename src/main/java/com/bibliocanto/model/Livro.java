@@ -8,22 +8,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDate;
 
-
+import java.util.List;
 
 
     @Entity
     @Table(name = "livros")
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+    @ToString(onlyExplicitlyIncluded = true)
+    @EqualsAndHashCode(onlyExplicitlyIncluded = true)
     public class Livro {
 
         @Id
-        private Long isbn; // Identificador natural/universal
+        @EqualsAndHashCode.Include
+        @ToString.Include
+        private Long isbn; //Long para suportar 13 dígitos
 
         @Column(nullable = false)
         private String titulo;
@@ -45,5 +48,9 @@ import java.time.LocalDate;
 
         @Column(columnDefinition = "TEXT")
         private String sinopse;
+
+        // "mappedBy" indica que a tabela de exemplares é quem guarda a FK
+        @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        private List<ExemplarLivro> exemplares;
 
 }

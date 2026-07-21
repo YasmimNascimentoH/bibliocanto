@@ -30,9 +30,9 @@ public class UsuarioDAOJpaImpl implements UsuarioDAO{
     }
 
     @Override
-    public Optional<Usuario> findByLogin(String login) {
-        TypedQuery<Usuario> query = entityManager.createQuery("SELECT u FROM Usuario u WHERE u.login = :login", Usuario.class);
-        query.setParameter("login", login);
+    public Optional<Usuario> findByLogin(String email) {
+        TypedQuery<Usuario> query = entityManager.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class);
+        query.setParameter("email", email);
         try {
             return Optional.of(query.getSingleResult());
         } catch (NoResultException e) {

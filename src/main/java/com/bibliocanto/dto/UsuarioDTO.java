@@ -9,13 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 // Inclui campos nulos na resposta (para que a senha=null apareça se desejado),
 // ou use NON_NULL para ocultar completamente campos vazios na resposta.
 @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -30,10 +31,8 @@ public class UsuarioDTO {
     private String nome;
 
     @NotBlank(message = "Login é obrigatório")
-    private String login;
+    private String email;
 
-    @NotNull(message = "Tipo de usuário é obrigatório")
-    private TipoUsuario tipo;
 
     // Campo sensível:
     // Mesmo em texto claro, não queremos enviar a senha de volta no JSON.

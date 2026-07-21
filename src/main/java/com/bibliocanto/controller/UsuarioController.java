@@ -1,5 +1,6 @@
 package com.bibliocanto.controller;
 
+import com.bibliocanto.dto.UsuarioCreateDTO;
 import com.bibliocanto.dto.UsuarioDTO;
 import com.bibliocanto.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public List<UsuarioDTO> getAll() {
+    public List<UsuarioCreateDTO> getAll() {
         return service.buscarTodos();
     }
 
@@ -31,7 +32,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> create(@RequestBody @Valid UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> create(@RequestBody @Valid UsuarioCreateDTO dto) {
         return new ResponseEntity<>(service.criar(dto), HttpStatus.CREATED);
     }
 
