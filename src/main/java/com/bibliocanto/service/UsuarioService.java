@@ -4,6 +4,7 @@ import com.bibliocanto.dao.UsuarioDAO;
 import com.bibliocanto.dto.UsuarioCreateDTO;
 import com.bibliocanto.dto.UsuarioDTO;
 import com.bibliocanto.exception.UsuarioNotFoundException;
+import com.bibliocanto.model.TipoUsuario;
 import com.bibliocanto.model.Usuario;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,31 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioCreateDTO criar(UsuarioCreateDTO dto) {
+        // Validação manual de senha obrigatória na criação
+        if (dto.getSenha() == null || dto.getSenha().isBlank()) {
+            throw new RuntimeException("Senha é obrigatória para criação de usuário.");
+        }
+
+        // Verificar login único
+        if (usuarioDAO.findByLogin(dto.getEmail()).isPresent()) {
+            throw new RuntimeException("Login já está em uso: " + dto.getEmail());
+        }
+
+        // Mapear DTO -> Entidade
+        Usuario usuario = Usuario.builder()
+                .nome(dto.getNome())
+                .email(dto.getEmail())
+                .senha(dto.getSenha()) // Salva em texto
+                .tipo(dto.getTipo())
+                .build();
+
+        usuarioDAO.save(usuario);
+        return convertToDTO(usuario);
+    }
+
+    @Transactional
+    public UsuarioCreateDTO criarVisitante(UsuarioCreateDTO dto) {
+        dto.setTipo(TipoUsuario.VISITANTE);
         // Validação manual de senha obrigatória na criação
         if (dto.getSenha() == null || dto.getSenha().isBlank()) {
             throw new RuntimeException("Senha é obrigatória para criação de usuário.");

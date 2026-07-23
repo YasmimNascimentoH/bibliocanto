@@ -45,4 +45,9 @@ public class EmprestimoController {
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}/devolucao")
+    public long devolucao(@PathVariable UUID id) {
+        return service.devolucaoEmprestimo(id);
+    }
 }

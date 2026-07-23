@@ -23,4 +23,6 @@ public class ExemplarLivroDTO {
 
     @NotNull(message = "A situação do livro é obrigatória")
     private SituacaoLivro situacao;
+
+    private UUID idEmprestimo;
 }

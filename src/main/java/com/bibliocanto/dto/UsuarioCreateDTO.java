@@ -16,6 +16,5 @@ import lombok.experimental.SuperBuilder;
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class UsuarioCreateDTO extends UsuarioDTO{
 
-    @NotNull(message = "Tipo de usuário é obrigatório")
     private TipoUsuario tipo;
 }

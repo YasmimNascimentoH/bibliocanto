@@ -21,17 +21,13 @@ public class ExemplarLivro {
     @ToString.Include
     private UUID id;
 
-    // Relacionamento N:1 (Vários Exemplares pertencem a Um Livro)
-    // Cria a Foreign Key 'livro_isbn' no banco de dados apontando para 'livros.isbn'
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "livro", nullable = false)
-    private Livro livro;
+    @Column
+    private Long isbn;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "situacao", nullable = false)
     private SituacaoLivro situacao;
 
-    /* O 'mappedBy' indica que a FK (exemplar_id) fica na tabela de Empréstimos
-    @OneToOne(mappedBy = "exemplar", fetch = FetchType.LAZY)
-    private Emprestimo emprestimo;*/
+    @Column(name = "id_emprestimo")
+    private UUID idEmprestimo;
 }

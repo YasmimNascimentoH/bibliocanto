@@ -47,13 +47,11 @@ public class ExemplarLivroService {
             throw new IllegalArgumentException("ISBN do livro inválido.");
         }
 
-        // 1. ANTES DE SALVAR: Busca o Livro real no banco de dados
-        Livro livroEncontrado = livroDAO.findById(dto.getIsbnLivro())
-                .orElseThrow(() -> new EntityNotFoundException("Livro com ISBN " + dto.getIsbnLivro() + " não encontrado na base."));
+
 
         // 2. Mapeia usando a ENTIDADE LIVRO, e não apenas o número
         ExemplarLivro exemplar = ExemplarLivro.builder()
-                .livro(livroEncontrado) // <-- Passamos o Objeto Livro
+                .isbn(dto.getIsbnLivro()) // <-- Passamos o Objeto Livro
                 .situacao(dto.getSituacao())
                 .build();
 
@@ -92,8 +90,19 @@ public class ExemplarLivroService {
     private ExemplarLivroDTO convertToDTO(ExemplarLivro exemplar) {
         return ExemplarLivroDTO.builder()
                 .id(exemplar.getId())
-                .isbnLivro(exemplar.getLivro().getIsbn()) // Lemos o ISBN de dentro do objeto Livro
+                .isbnLivro(exemplar.getIsbn())
                 .situacao(exemplar.getSituacao())
+                .idEmprestimo(exemplar.getIdEmprestimo())
                 .build();
+    }
+
+
+    @Transactional
+    public void exemplarEmprestado(UUID idExemplar, UUID idEmprestimo){
+        ExemplarLivro exemplarExistente = exemplarDAO.findById(idExemplar)
+                .orElseThrow(() -> new ExemplarLivroNotFoundException("Exemplar não encontrado."));
+        exemplarExistente.setIdEmprestimo(idEmprestimo);
+        exemplarDAO.update(exemplarExistente);
+
     }
 }

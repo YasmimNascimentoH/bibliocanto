@@ -1,5 +1,6 @@
 package com.bibliocanto.controller;
 
+import com.bibliocanto.model.ExemplarLivro;
 import com.bibliocanto.model.Livro;
 import com.bibliocanto.service.LivroService;
 import org.springframework.http.HttpStatus;
@@ -44,5 +45,11 @@ public class LivroController {
     public ResponseEntity<Void> delete(@PathVariable Long isbn) {
         service.deletar(isbn);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/{isbn}/exemplares")
+    public List<ExemplarLivro> exemplares(@PathVariable Long isbn) {
+        return service.exemplares(isbn);
     }
 }

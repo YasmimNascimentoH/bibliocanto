@@ -36,6 +36,11 @@ public class UsuarioController {
         return new ResponseEntity<>(service.criar(dto), HttpStatus.CREATED);
     }
 
+    @PostMapping("/visitante")
+    public ResponseEntity<UsuarioDTO> createVisitante(@RequestBody @Valid UsuarioCreateDTO dto) {
+        return new ResponseEntity<>(service.criarVisitante(dto), HttpStatus.CREATED);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioDTO> update(@PathVariable UUID id, @RequestBody @Valid UsuarioDTO dto) {
         return ResponseEntity.ok(service.atualizar(id, dto));

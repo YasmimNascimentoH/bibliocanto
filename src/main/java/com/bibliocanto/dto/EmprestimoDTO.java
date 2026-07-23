@@ -26,14 +26,20 @@ public class EmprestimoDTO {
     @NotNull(message = "O ID do visitante é obrigatório")
     private UUID visitanteId;
 
-    @NotNull(message = "A data de retirada é obrigatória")
+    // Campo de resposta (Response), ignorado na criação/edição
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDate dataRetirada;
 
-    @NotNull(message = "A data de devolução prevista é obrigatória")
+    // Campo de resposta (Response), ignorado na criação/edição
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDate dataDevolucaoPrevista;
 
+    // Campo de resposta (Response), ignorado na criação/edição
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDate dataDevolucaoReal;
 
-    @NotNull(message = "A situação do empréstimo é obrigatória")
+    // Campo de resposta (Response), ignorado na criação/edição
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private SituacaoEmprestimo situacao;
+
 }

@@ -1,8 +1,12 @@
 package com.bibliocanto.service;
 
 import com.bibliocanto.dao.LivroDAO;
+import com.bibliocanto.dao.jpa.ExemplarLivroDAOJPAImpl;
+import com.bibliocanto.dto.ExemplarLivroDTO;
 import com.bibliocanto.exception.EntityNotFoundException;
+import com.bibliocanto.model.ExemplarLivro;
 import com.bibliocanto.model.Livro;
+import com.bibliocanto.model.SituacaoLivro;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +16,13 @@ import java.util.List;
 public class LivroService {
 
     private final LivroDAO livroDAO;
+    private final ExemplarLivroService exemplarService;
+
 
     // Injeção via construtor (melhor prática)
-    public LivroService(LivroDAO livroDAO) {
+    public LivroService(LivroDAO livroDAO, ExemplarLivroService exemplarService) {
         this.livroDAO = livroDAO;
+        this.exemplarService = exemplarService;
     }
 
     // Consultas podem ser somente leitura para otimização
@@ -37,6 +44,14 @@ public class LivroService {
             throw new RuntimeException("Já existe um livro cadastrado com este ISBN.");
         }
         livroDAO.save(livro);
+        for(int i = livro.getQuantidadeExemplares(); i>0; i--){
+            ExemplarLivroDTO exemplarDTO = ExemplarLivroDTO.builder()
+                    .isbnLivro(livro.getIsbn())
+                    .situacao(SituacaoLivro.DISPONIVEL)
+                    .build();
+            exemplarService.criar(exemplarDTO);
+        }
+
     }
 
     @Transactional
@@ -52,6 +67,7 @@ public class LivroService {
         livroExistente.setNumeroPaginas(dadosAtualizados.getNumeroPaginas());
         livroExistente.setAssunto(dadosAtualizados.getAssunto());
         livroExistente.setSinopse(dadosAtualizados.getSinopse());
+        livroExistente.setQuantidadeExemplares(dadosAtualizados.getQuantidadeExemplares());
 
         // O Hibernate atualiza automaticamente ao final da transação devido ao estado Managed,
         // mas chamamos explicitamente o update (merge) para clareza do padrão DAO.
@@ -61,6 +77,14 @@ public class LivroService {
     @Transactional
     public void deletar(Long isbn) {
         Livro livro = buscarPorIsbn(isbn);
+        List<ExemplarLivro> exemplares = this.exemplares(isbn);
+        for(int i = livro.getQuantidadeExemplares()-1; i>=0; i--){
+            exemplarService.deletar(exemplares.get(i).getId());
+        }
         livroDAO.delete(livro);
+    }
+
+    public List<ExemplarLivro> exemplares(Long isnb){
+        return this.buscarPorIsbn(isnb).getExemplares();
     }
 }

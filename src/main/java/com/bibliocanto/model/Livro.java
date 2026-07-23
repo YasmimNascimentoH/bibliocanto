@@ -12,10 +12,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
-    @Entity
+@Entity
     @Table(name = "livros")
     @Data
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -49,8 +51,12 @@ import java.util.List;
         @Column(columnDefinition = "TEXT")
         private String sinopse;
 
+        @Column
+        private int quantidadeExemplares;
+
         // "mappedBy" indica que a tabela de exemplares é quem guarda a FK
-        @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @OneToMany(mappedBy = "isbn", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         private List<ExemplarLivro> exemplares;
+
 
 }
