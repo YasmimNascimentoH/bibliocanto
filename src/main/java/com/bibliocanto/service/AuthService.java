@@ -17,7 +17,7 @@ public class AuthService {
     public LoginResponse login(LoginRequest request) {
         System.out.println(request.email()+"  --- "+ request.senha());
         return loginDAO.findByEmailAndSenha(request.email(), request.senha())
-                .map(user -> new LoginResponse(user.getId(), user.getNome(), user.getEmail()))
+                .map(user -> new LoginResponse(user.getId(), user.getNome(), user.getEmail(), user.getTipo()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email ou senha inválidos"));
     }
 }

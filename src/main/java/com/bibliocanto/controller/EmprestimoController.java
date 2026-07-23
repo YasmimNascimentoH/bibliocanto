@@ -50,4 +50,9 @@ public class EmprestimoController {
     public long devolucao(@PathVariable UUID id) {
         return service.devolucaoEmprestimo(id);
     }
+
+    @GetMapping("/{id}/usuario")
+    public List<EmprestimoDTO> getByIdUser(@PathVariable UUID id) {
+        return service.emprestimosEsuario(id);
+    }
 }

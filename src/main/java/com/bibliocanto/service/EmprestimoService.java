@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -118,5 +119,17 @@ public class EmprestimoService {
         return diasAtraso > 0 ? diasAtraso : 0;
     }
 
+    @Transactional
+    public List<EmprestimoDTO> emprestimosEsuario(UUID idUsuario){
+        List<EmprestimoDTO> emprestimos = buscarTodos();
+        List<EmprestimoDTO> emprestimoUsuario = new ArrayList<>();
+
+        for(int i = emprestimos.size()-1; i>=0; i--){
+            if (emprestimos.get(i).getVisitanteId().equals(idUsuario))
+                emprestimoUsuario.add(emprestimos.get(i));
+
+        }
+        return emprestimoUsuario;
+    }
 
 }
