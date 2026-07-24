@@ -1,5 +1,12 @@
 # 📚 BiblioCanto — Sistema de Gestão de Biblioteca
 
+----------------------------------------------------
+Documentação e Requisitos do projeto
+
+https://docs.google.com/document/d/1RsHvlOMiySwEVuus0ucdufUSPvSO7VZLpyF2MePOMts/edit?usp=sharing
+
+--------------------------------------------------------
+
 O **BiblioCanto** é uma API RESTful corporativa desenvolvida para automatizar e gerenciar o fluxo operacional de bibliotecas. O sistema controla o acervo bibliográfico, o cadastro de visitantes e o ciclo de vida completo dos empréstimos de livros, aplicando regras de negócio rigorosas para garantir a integridade dos dados e do acervo físico.
 
 A arquitetura do projeto foi desenhada sob os princípios de **separação de responsabilidades (Clean Architecture)**, dividindo a aplicação em camadas bem definidas:
@@ -8,7 +15,7 @@ A arquitetura do projeto foi desenhada sob os princípios de **separação de re
 * **DAOs (Data Access Objects):** Isolamento total do acesso aos dados e execução de consultas via JPA/Hibernate.
 * **DTOs (Data Transfer Objects):** Blindagem do banco de dados, garantindo que apenas dados validados trafeguem entre a API e os clientes.
 
----
+--------------------------------------------------
 
 ## 🛠️ Tecnologias, Frameworks e Bibliotecas
 
@@ -46,18 +53,8 @@ O projeto foi construído utilizando o ecossistema mais moderno e robusto do des
 * **Para que serve:** Driver de comunicação com o banco de dados relacional escolhido.
 * **Por que foi utilizado:** Permite que a JVM (Máquina Virtual Java) e o Hibernate se conectem fisicamente ao banco de dados SQL para ler e gravar as tabelas de `livros`, `exemplares_livro`, `emprestimos` e `usuarios`.
 
----
+----------------------------------
 
-## 🗄️ Modelo e Relacionamentos do Banco de Dados
-
-O banco de dados segue regras de cardinalidade estritas para respeitar o acervo físico:
-
-* **Livro -> Exemplares (1:N):** Um registro de catálogo de livro (identificado pelo seu ISBN único) pode possuir múltiplos exemplares físicos com códigos UUID exclusivos.
-* **Exemplar -> Situação (1:1):** Cada exemplar possui estritamente um estado de situação em tempo real (`DISPONIVEL`, `EMPRESTADO`, `INDISPONIVEL`).
-* **Exemplar -> Empréstimo (1:1):** Para manter o controle estrito do acervo atual, cada exemplar físico transaciona em uma relação exclusiva de 1 para 1 com seu empréstimo ativo.
-* **Usuário -> Empréstimo (1:N):** Um visitante ou leitor cadastrado pode acumular um histórico de vários empréstimos realizados ao longo do tempo.
-
----
 
 ## 🚀 Como Executar o Projeto
 
